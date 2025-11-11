@@ -14,10 +14,13 @@ import SwipeablePanel from "components/Common/SwipeablePanel";
 const ListBranch = () => {
   const [loading, setLoading] = useState(false);
   const [branches, setBranches] = useState([]);
-  const [deleteLoader, setDeleteLoader] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+const [_deleteLoader, setDeleteLoader] = useState(false);
+ // eslint-disable-next-line no-unused-vars
+const [showConfirm, setShowConfirm] = useState(false);
   const [branchDetails, setBranchDetails] = useState({});
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [filteredBranches, setFilteredBranches] = useState([]);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
