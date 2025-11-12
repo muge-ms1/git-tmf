@@ -179,6 +179,7 @@ const [isDragMode, setIsDragMode] = useState(true); // switch toggle state
 
   const clickReorder = () => {
     setReorder(true);
+    console.log(tableHeader);
     setTableHeader((prev) => {
       return [
         { label: "Move", value: "move" },
