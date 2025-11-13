@@ -1,6 +1,6 @@
 import { DeleteFilled } from '@ant-design/icons';
 import { useState, useRef } from 'react';
-import { Avatar } from 'antd';
+import { Avatar,Modal } from 'antd';
 
 const SwipeablePanel = ({
   item,
@@ -15,7 +15,7 @@ const SwipeablePanel = ({
   const [offset, setOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
-
+const { confirm } = Modal;
   const SWIPE_THRESHOLD = 60;
   const BUTTON_WIDTH = 80;
   const TAP_THRESHOLD = 10;
@@ -74,7 +74,7 @@ const SwipeablePanel = ({
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            paddingLeft: 20,
+            paddingLeft: 15,
             color: '#fff',
             fontWeight: 500,
             zIndex: 0
@@ -90,30 +90,42 @@ const SwipeablePanel = ({
       )}
 
       {/* Right (Delete) button */}
-      {onSwipeLeft && (
-        <div
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: BUTTON_WIDTH,
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            paddingRight: 20,
-            color: '#fff',
-            fontWeight: 500,
-            zIndex: 0
-          }}
-          onClick={() => {
-            onSwipeLeft(item);
-            setOffset(0);
-          }}
-        >
-          <DeleteFilled /> Delete
-        </div>
-      )}
+    {/* Right (Delete) button */}
+{onSwipeLeft && (
+  <div
+    style={{
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      bottom: 0,
+      width: BUTTON_WIDTH,
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      paddingRight: 6,
+      color: '#fff',
+      fontWeight: 500,
+      zIndex: 0
+    }}
+    onClick={() => {
+      confirm({
+        title: 'Are you sure you want to delete?',
+        icon: <DeleteFilled style={{ color: '#ff4d4f' }} />,
+        okText: 'Delete',
+        cancelText: 'Cancel',
+        onOk() {
+          onSwipeLeft(item);
+        },
+        onCancel() {
+          setOffset(0);
+        },
+      });
+    }}
+  >
+    <DeleteFilled /> Delete
+  </div>
+)}
+
 
       {/* Foreground content */}
       <div
