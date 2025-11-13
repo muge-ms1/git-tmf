@@ -6,6 +6,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  TouchSensor,
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
@@ -26,7 +27,7 @@ const DraggableBodyRow = ({ index, className, style, ...restProps }) => {
 
   return (
     <RowContext.Provider value={{ setActivatorNodeRef: setNodeRef, listeners }}>
-      <tr ref={setNodeRef} {...attributes} {...listeners} {...restProps} />
+      <tr ref={setNodeRef} {...attributes} {...listeners} {...restProps}style={{ touchAction: "none", ...style }} />
     </RowContext.Provider>
   );
 };
@@ -44,20 +45,21 @@ const TableList = ({
 }) => {
   const [tableData, setTableData] = useState(data);
   const navigate = useNavigate();
-  const [contextHolder] = notification.useNotification();
+  const [api, contextHolder] = notification.useNotification();
   
   useEffect(() => {
     setTableData(data);
   }, [data]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 10,
-      },
-    })
-  );
-
+    useSensor(PointerSensor),
+  useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 150,
+      tolerance: 5,
+    },
+  })
+);
   const DragHandle = () => {
     const { setActivatorNodeRef, listeners } = useContext(RowContext);
 
@@ -66,7 +68,7 @@ const TableList = ({
         type="text"
         size="small"
         icon={<HolderOutlined />}
-        style={{ cursor: "grab" }}
+        style={{ cursor: "grab",touchAction: "none"  }}
         ref={setActivatorNodeRef}
         {...listeners}
       />
